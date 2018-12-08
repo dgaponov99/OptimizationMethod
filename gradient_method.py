@@ -1,26 +1,8 @@
 from scipy.optimize import minimize
-import math
+import functions
 
 
-def f1(x1, x2):
-    """function 1"""
-    return 100 * (x2 - x1 ** 2) ** 2 + 5 * (1 - x1) ** 2
-
-
-def grad_f1(x1, x2):
-    return [-400 * x1 * (x2 - x1 ** 2) - 10 * (1 - x1), 200 * (x2 - x1 ** 2)]
-
-
-def f2(x1, x2):
-    """function 2"""
-    return (x1 ** 2 + x2 - 11) ** 2 + (x1 + x2 ** 2 - 7) ** 2
-
-
-def grad_f2(x1, x2):
-    return [
-        4 * x1 * (x1 ** 2 + x2 - 11) + 2 * (x1 + x2 ** 2 - 7),
-        2 * (x1 ** 2 + x2 - 11) + 4 * x2 * (x1 + x2 ** 2 - 7)
-    ]
+# ---------------------------------------------------------------------------------------------
 
 
 def x_kpp(lamb, x_k, grad_f):
@@ -40,17 +22,17 @@ def min_lamb(lamb0, x_k, grad_f, f):
     return minimize(f1_x_kpp, lamb0, args=([x_k[0], x_k[1]], grad_f, f))
 
 
-def norma(x_k, x_kp1):
-    return math.sqrt((x_k[0] - x_kp1[0]) ** 2 + (x_k[1] - x_kp1[1]) ** 2)
+# ---------------------------------------------------------------------------------------------
 
 
-# norma(x_k, x_km1) > E1 or
-def minimization(f, grad_f, x0, e2):
+def minimization(fun, x0, e):
+    f = fun.f
+    grad_f = fun.grad_f
     x_k = x0
     x_km1 = [0, 0]
     first = True
     i = 0
-    while first or abs(f(x_k[0], x_k[1]) - f(x_km1[0], x_km1[1])) > e2:
+    while first or abs(f(x_k[0], x_k[1]) - f(x_km1[0], x_km1[1])) > e:
         first = False
         i += 1
         x_km1 = x_k
@@ -64,6 +46,6 @@ def minimization(f, grad_f, x0, e2):
     print('x_min:', x_k)
 
 
-minimization(f1, grad_f1, [0, 0], 0.0001)
+minimization(functions.f1, [0, 0], 0.000001)
 print()
-minimization(f2, grad_f2, [2, 2], 0.0001)
+minimization(functions.f2, [-2, 3], 0.0001)
