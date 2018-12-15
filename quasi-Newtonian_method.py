@@ -30,7 +30,7 @@ def minimization(fun, x0, e):
     print('x_min:', x_k)
 
 
-minimization(functions.f1, [20, -10], 0.000001)
+minimization(functions.f1, [100, -3], 0.0001)
 print()
-minimization(functions.f2, [20, 20], 0.0001)
+minimization(functions.f2, [-100, 100], 0.0001)
 
